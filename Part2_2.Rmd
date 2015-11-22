@@ -1,0 +1,51 @@
+---
+  title: "Statistical Inference Course Project. Part 2"
+author: "Masha Maziuk"
+output:
+  html_document: default
+pdf_document:
+  keep_tex: yes
+word_document: default
+---
+  
+## Overview
+In this project we are going to analyze the ToothGrowth data in the R datasets package.
+
+```{r}
+#Loading the dataset
+data(ToothGrowth)
+```
+
+
+## Basic exploratory data analyses
+
+```{r }
+str(toothGrowth)
+summary(ToothGrowth)
+head(ToothGrowth)
+table(ToothGrowth$supp)
+ToothGrowth$dose <- as.factor(ToothGrowth$dose)
+table(ToothGrowth$dose)
+```
+
+It's easy to see the difference between factor levels using boxplot. Let's create plots for both `supp` and `dose` variables, and see how the tooth length varies by different supp and dose levels.
+
+```{r }
+plot1 <- ggplot(ToothGrowth, aes(x = dose, y = len, fill = dose)) + 
+  geom_boxplot() +
+  theme(legend.position="none") +
+  labs(title = "Tooth Length by dose")
+plot2 <- ggplot(ToothGrowth, aes(x = supp, y = len, fill = supp)) + 
+  geom_boxplot() +
+  theme(legend.position="none") +
+  labs(title = "Tooth Length by supp")
+plot3 <- ggplot(ToothGrowth, aes(x = dose, y = len, fill = dose)) + 
+  geom_boxplot() +
+  theme(legend.position="none") +
+  facet_grid(.~supp) +
+  labs(title = "Tooth Length by dose & grouped by supp")
+
+library(grid)
+library(gridExtra)
+grid.arrange(plot1, plot2, plot3, ncol = 1)
+```
